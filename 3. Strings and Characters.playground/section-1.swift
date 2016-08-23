@@ -26,6 +26,7 @@ var emptyString = ""
 var anotherEmptyString = String()
 
 // Use 'isEmpty' to check for empty String
+// 判断是否为空,使用isEmpty
 if emptyString.isEmpty
 {
 	"Yep, it's empty"
@@ -33,6 +34,9 @@ if emptyString.isEmpty
 
 // Strings are VALUE TYPES, but they're referenced for performance so they are only copied on
 // modification.
+// 值类型,只有在数值改变的时候才会拷贝
+
+// 字符串不是指针，而是实际的值
 func somefunc(a: String)
 {
 	var b = a
@@ -44,6 +48,8 @@ somefunc(originalString)
 originalString // not modified
 
 // You can iterate over a string like this:
+// 可以for in
+// Swift的字符串String就是由字符Character组成的，每一个Character都代表了一个特定的Unicode字符。
 for character in originalString
 {
 	character
@@ -51,11 +57,14 @@ for character in originalString
 
 // Characters use double-quotes to specify them, so you must be explicit if you want a Character
 // instead of a String:
+// Character也是使用"",所以需要强制指定
 var notAString: Character = "t"
 
 // There is no length or count member of string, you have to use the global function,
+// 没有lenth函数,需要用全局函数
 // countElements()
 //
+// 有点儿像C语言的strlen函数
 // This is much like calling strlen in which it iterates over the Unicode string and counts
 // characters. Note that Unicode chars are different lenghts, so this is a non-trivial process.
 //
@@ -87,6 +96,7 @@ var str2 = "We're a lot alike, you and I."
 str1 == str2
 
 // You can also compare prefix and suffix equality:
+/// 前缀比较,后缀比较
 str1.hasPrefix("We're")
 str2.hasSuffix("I.")
 str1.hasPrefix("I.")
