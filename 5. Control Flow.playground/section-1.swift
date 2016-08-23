@@ -4,18 +4,22 @@
 // * Much of the control flow in Swift is similar to C-like languages, but there are some key
 //   differences. For example, switch-case constructs are much more flexible and powerful as well
 //   as extensions to break and continue statements.
+// 控制语句,大部分和C语言类似,但是也有一些不一样的地方,例如switch-case语句,更加灵活高效
 // ------------------------------------------------------------------------------------------------
 
 // ------------------------------------------------------------------------------------------------
 // For loops
+// For 循环
 //
 // We can loop through ranges using the closed-range operator ("...").
+// 闭合range和for搭配使用
 //
 // In the loop below, 'index' is a constant that is automatically declared.
+// For循环中,index是一个常量
 for index in 1...5
 {
 	"This will print 5 times"
-	
+
 	// Being a constant, the following line won't compile:
 	//
 	// index = 99
@@ -25,8 +29,10 @@ for index in 1...5
 // access it beyond the loop. The following line will not compile:
 //
 // index = 0
+// index for循环内有效
 
 // We can loop through ranges using the half-closed range operator ("..<")
+// 半闭range
 //
 // We can also reuse the name 'index' because of the scoping noted previously.
 for index in 1 ..< 5
@@ -43,6 +49,7 @@ for index in 1 ..< 5
 //
 // In practice, I find that the loop constant overrides any local variable/constant and maintains
 // its scope to the loop and does not alter the locally defined value:
+// indx 被覆盖
 var indx = 3999
 for indx in 1...5
 {
@@ -57,12 +64,14 @@ for indx in 1...5
 indx
 
 // We can use an underscore if you don't need access to the loop constant:
+// 如果你不要index 你可以用_代替
 for _ in 1...10
 {
 	println("do something")
 }
 
 // We can iterate over arrays
+// iterate数组
 let names = ["Anna", "Alex", "Brian", "Jack"]
 for name in names
 {
@@ -71,6 +80,7 @@ for name in names
 
 // We can iterate over a Dictionary's key/value pairs
 let numberOfLegs = ["Spider":8, "Ant":6, "Cat":4]
+// 字典杠杠滴
 for (animalName, legs) in numberOfLegs
 {
 	animalName
@@ -78,6 +88,7 @@ for (animalName, legs) in numberOfLegs
 }
 
 // We can iterate over characters in a String
+// 字符串迭代
 for character in "Hello"
 {
 	character
@@ -87,18 +98,21 @@ for character in "Hello"
 //
 // Note that the loop value is a variable, not a constant. In fact, they cannot be constant
 // because of the increment statement (++index)
+// 类似于C语言的for循环结构
 for (var index = 0; index < 3; ++index)
 {
 	index
 }
 
 // The parenthesis are optional for the For-Condition-Increment loop:
+// 括号是可选的
 for var index = 0; index < 3; ++index
 {
 	index
 }
 
 // Variables are scoped to the For-Condition-Increment construct. To alter this, pre-declare index
+// 看清楚index变量
 var index = 3000
 for index = 0; index < 3; ++index
 {
@@ -111,6 +125,7 @@ index // Index holds 3 after running through the loop
 //
 // While loops resemble other C-like languages. They perform the condition before each iteration
 // through the loop:
+// While循环
 while index > 0
 {
 	--index
@@ -119,6 +134,7 @@ while index > 0
 // Do-While loops also resemble their C-like language counterparts. They perform the condition
 // after each iteration through the loop. As a result, they always execute the code inside the
 // loop at least once:
+// Do Whilh循环
 do
 {
 	++index
@@ -126,6 +142,7 @@ do
 
 // ------------------------------------------------------------------------------------------------
 // Conditional Statements
+// 条件语句
 //
 // The if statement is very similar to C-like languages, except that the parenthesis are optional.
 // You can also chain multiple conditions with 'else' and 'else if' statements:
@@ -161,7 +178,7 @@ switch someCharacter
 {
 	case "a", "e", "i", "o", "u":
 		"a vowel"
-	
+
 	case "b", "c", "d", "f", "g", "h", "j", "k", "l", "m", "n", "p", "q", "r", "s", "t", "v", "w", "x", "u", "z":
 		"a consonant"
 
@@ -215,19 +232,19 @@ switch somePoint
 {
 	case (0,0):
 		"origin"
-	
+
 	// Match only against y=0
 	case (_, 0):
 		"On the X axis"
-	
+
 	// Match only against x=0
 	case (0, _):
 		"On the y axis"
-	
+
 	// Match x and y from -2 to +2 (inclusive)
 	case (-2...2, -2...2):
 		"On or inside the 2x2 box"
-	
+
 	// Everything else
 	default:
 		"Outisde the 2x2 box"
@@ -241,11 +258,11 @@ switch anotherPoint
 	// Bind 'x' to the first value (matching any x) of the tuple and match on y=0
 	case (let x, 0):
 		"On the x axis with an x value of \(x)"
-	
+
 	// Bind 'y' to the second value (matching any y) of the tuple and match against x=0
 	case (0, let y):
 		"On the y axis with an y value of \(y)"
-	
+
 	// Bind both values of the tuple, matching any x or y. Note the shorthand of the 'let'
 	// outside of the parenthesis. This works with 'var' as well.
 	//
@@ -262,10 +279,10 @@ switch anotherPoint
 {
 	case (let x, 0):
 		"On the x axis with an x value of \(x)"
-	
+
 	case (0, let y):
 		"On the y axis with an y value of \(y)"
-	
+
 	case (var x, let y):
 		++x // We can modify the variable 'x', but not the constant 'y'
 		"Somewhere else on \(x), \(y)"
@@ -278,10 +295,10 @@ switch yetAnotherPoint
 {
 	case let (x, y) where x == y:
 		"On the line of x == y"
-	
+
 	case let (x, y) where x == -y:
 		"On the line of x == -y"
-	
+
 	case let (x, y):
 		"Just some arbitrary point"
 }
@@ -305,7 +322,7 @@ switch someValue
 			break
 		}
 		"Odd number greater or equal to 100"
-		
+
 	case let x where (x & 1) == 0:
 		if someValue < 100
 		{
@@ -313,7 +330,7 @@ switch someValue
 			break
 		}
 		"Even number greater or equal to 100"
-	
+
 	default:
 		"Unknown value"
 }
@@ -324,13 +341,13 @@ switch someValue
 {
 	case Int.min...100:
 		"Small number"
-	
+
 	case 101...1000:
 		break // We don't care about medium numbers
-	
+
 	case 1001...100_00:
 		"Big number"
-	
+
 	default:
 		break // We don't care about the rest, either
 }
@@ -344,7 +361,7 @@ switch integerToDescribe
 	case 2, 3, 5, 7, 11, 13, 17, 19:
 		integerDescription += " a prime number, and also"
 		fallthrough
-	
+
 	default:
 		integerDescription += " an integer."
 }
@@ -365,7 +382,7 @@ nameLoop: for name in names
 			case "a":
 				// Break out of the theSwitch and characterLoop
 				break characterLoop
-			
+
 			default:
 				result += String(character)
 		}
@@ -384,7 +401,7 @@ nameLoop: for name in names
 			case "a":
 				// Continue directly to the character loop, bypassing this character in this name
 				continue characterLoop
-			
+
 			default:
 				result += String(character)
 		}
@@ -404,7 +421,7 @@ nameLoop: for name in names
 			case "x":
 				// Break completely out of the outer name loop
 				break nameLoop
-			
+
 			default:
 				result += String(character)
 		}
