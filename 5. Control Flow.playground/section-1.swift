@@ -4,6 +4,7 @@
 // * Much of the control flow in Swift is similar to C-like languages, but there are some key
 //   differences. For example, switch-case constructs are much more flexible and powerful as well
 //   as extensions to break and continue statements.
+// 控制语句
 // ------------------------------------------------------------------------------------------------
 
 // ------------------------------------------------------------------------------------------------
@@ -15,7 +16,7 @@
 for index in 1...5
 {
 	"This will print 5 times"
-	
+
 	// Being a constant, the following line won't compile:
 	//
 	// index = 99
@@ -161,7 +162,7 @@ switch someCharacter
 {
 	case "a", "e", "i", "o", "u":
 		"a vowel"
-	
+
 	case "b", "c", "d", "f", "g", "h", "j", "k", "l", "m", "n", "p", "q", "r", "s", "t", "v", "w", "x", "u", "z":
 		"a consonant"
 
@@ -215,19 +216,19 @@ switch somePoint
 {
 	case (0,0):
 		"origin"
-	
+
 	// Match only against y=0
 	case (_, 0):
 		"On the X axis"
-	
+
 	// Match only against x=0
 	case (0, _):
 		"On the y axis"
-	
+
 	// Match x and y from -2 to +2 (inclusive)
 	case (-2...2, -2...2):
 		"On or inside the 2x2 box"
-	
+
 	// Everything else
 	default:
 		"Outisde the 2x2 box"
@@ -241,11 +242,11 @@ switch anotherPoint
 	// Bind 'x' to the first value (matching any x) of the tuple and match on y=0
 	case (let x, 0):
 		"On the x axis with an x value of \(x)"
-	
+
 	// Bind 'y' to the second value (matching any y) of the tuple and match against x=0
 	case (0, let y):
 		"On the y axis with an y value of \(y)"
-	
+
 	// Bind both values of the tuple, matching any x or y. Note the shorthand of the 'let'
 	// outside of the parenthesis. This works with 'var' as well.
 	//
@@ -262,10 +263,10 @@ switch anotherPoint
 {
 	case (let x, 0):
 		"On the x axis with an x value of \(x)"
-	
+
 	case (0, let y):
 		"On the y axis with an y value of \(y)"
-	
+
 	case (var x, let y):
 		++x // We can modify the variable 'x', but not the constant 'y'
 		"Somewhere else on \(x), \(y)"
@@ -278,10 +279,10 @@ switch yetAnotherPoint
 {
 	case let (x, y) where x == y:
 		"On the line of x == y"
-	
+
 	case let (x, y) where x == -y:
 		"On the line of x == -y"
-	
+
 	case let (x, y):
 		"Just some arbitrary point"
 }
@@ -305,7 +306,7 @@ switch someValue
 			break
 		}
 		"Odd number greater or equal to 100"
-		
+
 	case let x where (x & 1) == 0:
 		if someValue < 100
 		{
@@ -313,7 +314,7 @@ switch someValue
 			break
 		}
 		"Even number greater or equal to 100"
-	
+
 	default:
 		"Unknown value"
 }
@@ -324,13 +325,13 @@ switch someValue
 {
 	case Int.min...100:
 		"Small number"
-	
+
 	case 101...1000:
 		break // We don't care about medium numbers
-	
+
 	case 1001...100_00:
 		"Big number"
-	
+
 	default:
 		break // We don't care about the rest, either
 }
@@ -344,7 +345,7 @@ switch integerToDescribe
 	case 2, 3, 5, 7, 11, 13, 17, 19:
 		integerDescription += " a prime number, and also"
 		fallthrough
-	
+
 	default:
 		integerDescription += " an integer."
 }
@@ -365,7 +366,7 @@ nameLoop: for name in names
 			case "a":
 				// Break out of the theSwitch and characterLoop
 				break characterLoop
-			
+
 			default:
 				result += String(character)
 		}
@@ -384,7 +385,7 @@ nameLoop: for name in names
 			case "a":
 				// Continue directly to the character loop, bypassing this character in this name
 				continue characterLoop
-			
+
 			default:
 				result += String(character)
 		}
@@ -404,7 +405,7 @@ nameLoop: for name in names
 			case "x":
 				// Break completely out of the outer name loop
 				break nameLoop
-			
+
 			default:
 				result += String(character)
 		}
