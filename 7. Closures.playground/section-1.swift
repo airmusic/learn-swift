@@ -2,9 +2,11 @@
 // Things to know:
 //
 // * Closures are blocks of code.
+// 闭包就是一个代码片段
 //
 // * The can be passed as parameters to functions much like Function Types. In fact, functions
 //   are a special case of closures.
+// 函数是一个特殊的闭包
 //
 // * Closures of all types (including nested functions) employ a method of capturing the surrounding
 //   context in which is is defined, allowing it to access constants and variables from that
@@ -34,44 +36,50 @@
 // outside of those curly braces:
 let names = ["Chris", "Alex", "Ewa", "Barry", "Daniella"]
 var reversed = [String]()
-reversed = names.sorted({
-    (s1: String, s2: String) -> Bool in
-        return s1 > s2
-})
+reversed = names.sort(
+    {(s1:String,s2:String)-> Bool in return s1>s2}
+)
 
 // ------------------------------------------------------------------------------------------------
 // Inferring Type from Context
 //
 // Like functions, closures have a type.
+// 和函数一样,闭包也有类型
 //
 // If the type is known (as is always the case when passing a closure as a parameter to a function)
 // then the return type of the closure can be inferred, allowing us to simplify the syntax of our
 // call to sort.
+// 如果类型知道的(当传递一个闭包作为函数参数的时候,返回值是可以隐身推断踹的
 //
 // The following call is identical to the one above with the exception that "-> Bool" was removed:
-reversed = names.sorted({
+// 返回值类型可以不用写了
+reversed = names.sort({
     (s1: String, s2: String) in
-		return s1 > s2
+    return s1 > s2
 })
 
 // Just as the return type can be inferred, so can the parameter types. This allows us to simplify
 // the syntax a bit further by removing the type annotations from the closure's parameters.
+// 闭包参数也可以推断
 //
 // The following call is identical to the one above with the exception that the parameter type
 // annotations (": String") have been removed:
-reversed = names.sorted({
+// 参数类型就去掉了
+reversed = names.sort({
     (s1, s2) in
-		return s1 > s2
+    return s1 > s2
 })
 
 // Since all types can be inferred and we're not using any type annotation on the parameters,
 // we can simplify a bit further by removing the paranthesis around the parameters. We'll also put
 // it all on a single line, since it's a bit more clear now:
-reversed = names.sorted({ s1, s2 in return s1 > s2 })
+// 更加简洁,去掉括号
+reversed = names.sort({ s1, s2 in return s1 > s2 })
 
 // If the closuere has only a single expression, then the return statement is also inferred. When
 // this is the case, the closure returns the value of the single expression:
-reversed = names.sorted({ s1, s2 in s1 > s2 })
+// 返回也可以推断,更加更加简洁
+reversed = names.sort({ s1, s2 in s1 > s2 })
 
 // We're not done simplifying yet. It turns out we can get rid of the parameters as well. If we
 // remove the parameters, we can still access them because Swift provides shorthand names to
@@ -83,9 +91,11 @@ reversed = names.sorted({ s1, s2 in s1 > s2 })
 //    reversed = names.sorted({ s1, s2 in $0 > $1 })
 //
 // This won't compile because you're not allowed to use shorthand names if you specify the
+// 上面的不会编译通过,如果你制定了参数列表
 // parameter list. Therefore, we need to remove those in order to get it to compile. This makes
 // for a very short inline closure:
-reversed = names.sorted({ $0 > $1 })
+// 简洁得不能再简洁了
+reversed = names.sort({ $0 > $1 })
 
 // Interestingly enough, the operator < for String types is defined as:
 //
@@ -96,9 +106,11 @@ reversed = names.sorted({ $0 > $1 })
 // exactly this.
 //
 // Here's what that looks like:
-reversed = names.sorted(>)
+// inline 闭包
+reversed = names.sort(>)
 
 // If you want to just sort a mutable copy of an array (in place) you can use the sort() method
+// 如果你指向拷贝翻转
 var mutableCopyOfNames = names
 
 mutableCopyOfNames.sort(>)
@@ -107,18 +119,21 @@ mutableCopyOfNames
 
 // ------------------------------------------------------------------------------------------------
 // Trailing Closures
-//
+// 尾部闭包
 // Trailing Closures refer to closures that are the last parameter to a function. This special-case
 // syntax allows a few other syntactic simplifications. In essence, you can move trailing closures
 // just outside of the parameter list. Swift's sorted() member function uses a trailing closure for
 // just this reason.
+// 如果您需要将一个很长的闭包表达式作为最后一个参数传递给函数，可以使用 trailing 闭包来增强函数的可读性。
+
+
 //
 // Let's go back to our original call to sort with a fully-formed closure and move the closure
 // outside of the parameter list. This resembles a function definition, but it's a function call.
-reversed = names.sorted {
-		(s1: String, s2: String) -> Bool in
-		return s1 > s2
-	}
+reversed = names.sort {
+    (s1: String, s2: String) -> Bool in
+    return s1 > s2
+}
 
 // Note that the opening brace for the closure must be on the same line as the function call's
 // ending paranthesis. This is the same functinon call with the starting brace for the closure
@@ -131,15 +146,15 @@ reversed = names.sorted {
 // }
 
 // Let's jump back to our simplified closure ({$0 > $1}) and apply the trailing closure principle:
-reversed = names.sorted {$0 > $1}
+reversed = names.sort() {$0 > $1}
 
 // Another simplification: if a function receives just one closure as the only parameter, you can
 // remove the () from the function call. First, we'll need a function that receives just one
 // parameter, a closure:
 func returnValue(f: () -> Int) -> Int
 {
-	// Simply return the value that the closure 'f' returns
-	return f()
+    // Simply return the value that the closure 'f' returns
+    return f()
 }
 
 // Now let's call the function with the parenthesis removed and a trailing closure:
@@ -151,28 +166,31 @@ returnValue {6}
 
 // ------------------------------------------------------------------------------------------------
 // Capturing Values
+// 捕获值
 //
 // The idea of capturing is to allow a closure to access the variables and constants in their
 // surrounding context.
+// 捕获的目的是为闭包能访问变量
 //
 // For example, a nested function can access contstans and variables from the function in which
 // it is defined. If this nested function is returned, each time it is called, it will work within
 // that "captured" context.
+// 多次调用不会那啥,本地变量不会改变
 //
 // Here's an example that should help clear this up:
 func makeIncrementor(forIncrement amount: Int) -> () -> Int
 {
-	var runningTotal = 0
-	
-	// runningTotal and amount are 'captured' for the nested function incrementor()
-	func incrementor() -> Int
-	{
-		runningTotal += amount
-		return runningTotal
-	}
-
-	// We return the nested function, which has captured it's environment
-	return incrementor
+    var runningTotal = 0
+    
+    // runningTotal and amount are 'captured' for the nested function incrementor()
+    func incrementor() -> Int
+    {
+        runningTotal += amount
+        return runningTotal
+    }
+    
+    // We return the nested function, which has captured it's environment
+    return incrementor
 }
 
 // Let's get a copy of the incrementor:
@@ -193,6 +211,7 @@ incrementBy10() // returns 30
 
 // Closures are reference types, which allows us to assign them to a variable. When this happens,
 // the captured context comes along for the ride.
+// 可以赋值给一个变量
 var copyIncrementBy10 = incrementBy10
 copyIncrementBy10() // returns 40
 
@@ -200,6 +219,6 @@ copyIncrementBy10() // returns 40
 // context:
 var anotherIncrementBy10 = makeIncrementor(forIncrement: 10)
 anotherIncrementBy10() // returns 10
-
+// 闭包是引用类型
 // Our first incrementor is still using its own context:
 incrementBy10() // returns 50
