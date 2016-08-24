@@ -161,18 +161,24 @@ else
 
 // Switch statements are more powerful than their C-like counterparts. Here are a few of those
 // differences to get us started:
+// Switch 语句比CLIKE更加强大,下面就是一些例子
 //
 // Unlike C-like languages, switch statements do not require a "break" statement to prevent falling
 // through to the next case.
+// 不需要break语句啦
 //
 // Additionally, multiple conditions can be separated by a comma for a single case to match
 // multiple conditions.
+// 多个条件可以用逗号分隔
 //
 // Switch statements must also be exhaustive and include all possible values, or the compiler will
 // generate an error.
+// 必须包含所有可能的情况,不然会报错
 //
 // There are many more differences, but let's start with a simple switch statement to get our feet
 // wet:
+// get one's feet wet
+// [释] to start learning something;
 let someCharacter: Character = "e"
 switch someCharacter
 {
@@ -188,9 +194,12 @@ switch someCharacter
 }
 
 // Each case clause must have a statement of some kind. A comment will not suffice.
+// 每个case必须处理一些东西,注释不可行
 //
 // Otherwise you will get a compilation error. The following won't compile because there is an
 // empty case statement:
+// 空的case是编译不过的
+
 //
 // let anotherCharacter: Character = "a"
 // switch anotherCharacter
@@ -203,6 +212,7 @@ switch someCharacter
 //	}
 
 // We can perform range matching for cases:
+// range操作符,搜搜的爽
 let count = 3_000_000_000_000
 switch count
 {
@@ -223,7 +233,7 @@ switch count
 }
 
 // Matching against tuples
-//
+// 元组匹配
 // In addition to matching Tuples, we can also use ranges inside Tuple values and even match
 // against partial Tuple values by using an "_" to ignore matches against a specific value within
 // the Tuple.
@@ -251,7 +261,7 @@ switch somePoint
 }
 
 // Value bindings in switch statements
-//
+// 数值绑定
 var anotherPoint = (2, 8)
 switch anotherPoint
 {
@@ -275,6 +285,8 @@ switch anotherPoint
 // We can also mix let/var for case statements. The following code block is the same as the
 // previous except that the final case statement, which mixes variable and constants for the x and
 // y components of the Tuple.
+
+// mix let/var
 switch anotherPoint
 {
 	case (let x, 0):
@@ -290,6 +302,8 @@ switch anotherPoint
 
 // Where clauses allow us to perform more detailed conditions on case conditions. The where clauses
 // work on the values declared on the case line:
+
+// case where ,有点儿像linq
 let yetAnotherPoint = (1, -1)
 switch yetAnotherPoint
 {
@@ -305,13 +319,16 @@ switch yetAnotherPoint
 
 // ------------------------------------------------------------------------------------------------
 // Control transfer statements
+// 控制transfer
 //
 // Swift supports extended versions of continue and break as well as an additional 'fallthrough'
 // statement for switch-case constructs.
+// 语句穿透
 //
 // Since swift doesn't require a break statement to avoid falling through to the next case, we can
 // still use them to early-out of the current case without continuing work. The first statement
 // after the 'break' will be the next statement following the entire switch construct.
+// 尽快不需要break来防止穿透,但是可以通过break提前结束break语句
 let someValue = 9000
 switch someValue
 {
@@ -337,6 +354,7 @@ switch someValue
 
 // Since each case must have a statement and since we must have an exhaustive switch, we can use
 // the break statement to effectively nullify the use of a case:
+// 可以使用break,来代替default输出
 switch someValue
 {
 	case Int.min...100:
@@ -354,8 +372,9 @@ switch someValue
 
 // Since we don't need to break out of cases to avoid falling through automatically, we must
 // specifically express our intention to fall through using the 'fallthrough' keyword
+// 如果你需要fallthrough,那就加个fallthrough关键字
 let integerToDescribe = 5
-var integerDescription = "\(integerToDescribe) is"
+var integerDescription = "\(integerToDescribe) is" (字符翻译,这个在ruby里面很常用)
 switch integerToDescribe
 {
 	case 2, 3, 5, 7, 11, 13, 17, 19:
@@ -370,8 +389,11 @@ switch integerToDescribe
 // switch or loop construct to break out of, or continue to.
 //
 // To enable this, labels are used, similar to labels used by C's goto statement.
+// 标签,C语言的Goto
+
 //
 // The following will print each name until it reaches the letter 'a' then skip to the next name
+// 指定break什么东西,下面的break是break For循环
 var result = ""
 nameLoop: for name in names
 {
@@ -391,6 +413,7 @@ nameLoop: for name in names
 result
 
 // Similarly, this prints all names without the letter 'a' in them:
+// continue 的使用方法
 result = ""
 nameLoop: for name in names
 {
@@ -411,6 +434,7 @@ result
 
 // Similarly, this prints all names until the letter 'x' is found, then aborts all processing by
 // breaking out of the outer loop:
+// 明确的指定break什么东西,这个比较舒服一些,代码会更加简洁
 result = ""
 nameLoop: for name in names
 {
