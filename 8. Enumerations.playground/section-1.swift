@@ -2,8 +2,10 @@
 // Things to know:
 //
 // * Enumerations in Swift are different from their popular counterparts in C-like languages.
+//   枚舉和C语言是不一样的
 //   Rather that containing "one of a set of integer values" like most C-like languages, Swift's
 //   enumerations can be thought of as holding one named type of a given set of named types.
+//
 //
 //   To clarify: Rather than holding an integer value that has been pre-defined integer value
 //   (Error = -1, Success = 0) an enumeration in Swift only associates a name with a type (like
@@ -18,9 +20,11 @@
 // ------------------------------------------------------------------------------------------------
 
 // Here is the simple enumeration.
+// 簡單枚舉
 //
 // Unlike their C counterparts, the members of the enumeration below are not integer values (0,
 // 1, 2, etc.) Instead, each member is a fully-fledged value in its own right.
+//
 enum Planet
 {
 	case Mercury
@@ -35,23 +39,34 @@ enum Planet
 
 // You can also combine members onto a single line if you prefer, or mix them up. This has no
 // effect on the enumeration itself.
-enum CompassPoint
+enum compassPoint
 {
+    //多个成员值可以出现在同一行上，用逗号隔开
 	case North, South
 	case East, West
 }
+enum a
+{
+    case x
+}
 
 // Let's store an enumeration value into a variable. We'll let the compiler infer the type:
-var directionToHead = CompassPoint.West
+// 類型推斷
+var directionToHead = compassPoint.East
 
 // Now that directionToHead has a CompassPoint type (which was inferred) we can set it to a
 // different CompassPoint value using a shorter syntax:
+// directionToHead的类型被推断当它被CompassPoint的一个可能值初始化。一旦directionToHead被声明为一个CompassPoint，你可以使用更短的点（.）语法将其设置为另一个CompassPoint的值：
 directionToHead = .East
 
+
+// 匹配枚举值和Switch语句
 // We can use a switch to match values from an enumeration.
+// switch匹配
 //
 // Remember that switches have to be exhaustive. But in this case, Swift knows that the CompassType
 // enumeration only has 4 values, so as long as we cover all 4, we don't need the default case.
+// 不需要default
 switch directionToHead
 {
 	case .North:
@@ -62,6 +77,13 @@ switch directionToHead
 		"East"
 	case .West:
 		"West"
+}
+
+switch directionToHead {
+case .North:
+    "North"
+default:
+    "Fuck"
 }
 
 // ------------------------------------------------------------------------------------------------
@@ -150,11 +172,11 @@ FamilyPet.Ferret.rawValue
 var pet = FamilyPet(rawValue: "Ferret")
 
 // Let's verify this:
-if pet != .None { "We have a pet!" }
-else { "No pet :(" }
+//if pet != .None { "We have a pet!" }
+//else { "No pet :(" }
 
 // An example of when a raw doesn't translate to an enum, leaving us with a nil optional:
 pet = FamilyPet(rawValue: "Snake")
-if pet != .None { "We have a pet" }
-else { "No pet :(" }
+//if pet != .None { "We have a pet" }
+//else { "No pet :(" }
 
