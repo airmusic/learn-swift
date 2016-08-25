@@ -16,16 +16,21 @@
 //   array.
 // ------------------------------------------------------------------------------------------------
 
+//数组
+
 // Create an array of Strings
+// 泛型string数组
 var someArray = Array<String>()
 
 // Shorter, more common way to define an array of Strings
+// 简短,更加通用的做法
 var shorter: [String]
 
 // This is an array literal. Since all members are of type String, this will create a String array.
 //
 // If all members are not the same type (or cannot be inferred to a homogenized type) then you
 // would get a compiler error.
+// 必须是同类型的
 ["Eggs", "Milk"]
 
 // Let's create an array with some stuff in it. We'll use an explicit String type:
@@ -34,54 +39,66 @@ var commonPets: [String] = ["Cats", "Dogs"]
 // We can also let Swift infer the type of the Array based on the type of the initializer members.
 //
 // The folowing is an array of Strings
+// 可以通过初始化来推断类型
 var shoppingList = ["Eggs", "Milk"]
 
 // ------------------------------------------------------------------------------------------------
 // Accessing and modifying an Array
 //
 // We can get the number of elements
+// 数组个数
 shoppingList.count
 
 // We can check to see if it's empty
+// 是否为空
 if !shoppingList.isEmpty { "it's not empty" }
 
 // We can append to the end
+// 增加
 shoppingList.append("Flour")
 shoppingList.append("Baking Powder")
 shoppingList.count
 
 // We can append another array of same type
+// 通过运算符增加
 shoppingList += ["Chocolate Spread", "Cheese", "Butter"]
 shoppingList.count
 
 // We can get elements from the array by indexing them
+// 获得引用
 shoppingList[0]
 shoppingList[1]
 
 // We can modify an existing item
+// 修改
 shoppingList[0] = "Six Eggs"
 
 // We can use a range operator to modify existing items. This operation modifies a range with
 // a target range. If the target range has more or fewer elements in it, the size of the array
 // will be adjusted.
 //
+// 3个元素替换为2个
 // Here, we replace 3 items with only two, removing an item:
 shoppingList[4...6] = ["Banannas", "Apples"]
 
 // Or we can replace two items with three, inserting a new item:
+// 2个替换为三个
 shoppingList[4..<6] = ["Limes", "Mint leaves", "Sugar"]
 
 // We can insert an item at a given index
+// 插入元素
 shoppingList.insert("Maple Syrup", atIndex: 3)
 
 // We can remove the last element. During this, we can preserve the value of what was removed
 // into a stored value
+// 移除最后一个
 let apples = shoppingList.removeLast()
 
 // ------------------------------------------------------------------------------------------------
 // Enumeration
 //
 // We can iterate over the the array using a for-in loop
+// 迭代
 for item in shoppingList
 {
 	item
@@ -89,6 +106,7 @@ for item in shoppingList
 
 // We can also use the the enumerate() method to return a tuple containing the index and value
 // for each element:
+// 返回元组
 for (index, value) in enumerate(shoppingList)
 {
 	index
@@ -108,16 +126,20 @@ someInts
 
 // We can assign it to an empty array, but we don't modify the type, since someInts is already
 // an Int[] type.
+// 数组赋值为空
 someInts = []
 
 // We can initialize an array and and fill it with default values
+// 初始化,并填充数值
 var threeDoubles = [Double](count: 3, repeatedValue: 3.3)
 
 // We can also use the Array initializer to fill it with default values. Note that we don't need to
 // specify type since it is inferred:
+// 不指定类型初始化
 var anotherThreeDoubles = Array(count: 3, repeatedValue: 2.5)
 
 // If you store an array in a constant, it is considered "Immutable"
+// 常量数组
 let immutableArray = ["a", "b"]
 
 // In terms of immutability, it's important to consider that the array and its contents are treated
@@ -131,6 +153,7 @@ let immutableArray = ["a", "b"]
 // Nor can we change the size or add an element, you will get a compiler error:
 //
 // immutableArray += "c"
+// 不可改变size和content
 
 // ------------------------------------------------------------------------------------------------
 // Arrays are Value Types
@@ -138,6 +161,8 @@ let immutableArray = ["a", "b"]
 // Arrays are value types that only copy when necessary, which is only when the array itself
 // changes (not the contents.)
 //
+// 数值属于值类型,拷贝
+
 // Here are three copies of an array:
 var a = [1, 2, 3]
 var b = a
