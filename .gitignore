@@ -1,6 +1,4 @@
-*.xctimeline
 .DS_Store
-playground.xcworkspace
-UserInterfaceState.xcuserstate
 *.xcuserstate
-*/playground.xcworkspace
+*.xcworkspace
+*.xcplayground
