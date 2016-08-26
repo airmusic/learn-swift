@@ -1,89 +1,125 @@
 // ------------------------------------------------------------------------------------------------
+// 构造过程（Initialization）
+// 本页包含内容：
+//
+// 存储型属性的初始赋值
+// 定制化构造过程
+// 默认构造器
+// 值类型的构造器代理
+// 类的继承和构造过程
+// 可失败构造器
+// 必要构造器
+// 通过闭包和函数来设置属性的默认值
 // Things to know:
+//   初始化
 //
 // * Swift provides an initializer (which partially resembles a function) to ensure that every
 //   property in a class, structure or enumeration is fully initialized.
+// 确保属性被初始化
 //
 // * Optionals do not need to be initialized as they are automatically initialized to nil if no
 //   default value is provided.
+//   可选值,并不需要被会初始化
 // ------------------------------------------------------------------------------------------------
 
 // Here's a basic use of an initializer.
-//
+// 基础使用
 // The Fahrenheit class will create a 'temperature' property that does not have a default value.
 // Because there is no default value, the property must be initialized in the initializer.
 //
 // Without the initializer, we would get an error whenever we tried to instantiate the Fahrenheit
 // class.
-struct Fahrenheit
-{
-	var temperature: Double
+// 构造器
+// 构造器在创建某特定类型的新实例时调用。它的最简形式类似于一个不带任何参数的实例方法，以关键字init命名。
 
-	init()
-	{
-		temperature = 32.0
-	}
+
+struct Fahrenheit1
+{
+    var temperature: Double
+    /*
+     init()
+     {
+     temperature = 32.0
+     }*/
 }
 
 // Since the class can fully initialize itself, we can safely instantiate it with no error:
+// 编译器初始化,手动初始化
+var f1 = Fahrenheit1(temperature: 3)
+struct Fahrenheit
+{
+    var temperature: Double
+    init()
+    {
+        temperature = 32.0
+    }
+}
 var f = Fahrenheit()
 
 // Since the temperature is always defined as "32.0", it is cleaner and preferred to use a default
 // value instead of setting it inside the initializer:
+// 可以使用default 值
 struct AnotherFahrenheit
 {
-	var temperature: Double = 32.0
+    var temperature: Double = 32.0
 }
 
+// 定制化构造过程
+
+// 你可以通过输入参数和可选属性类型来定制构造过程，也可以在构造过程中修改常量属性。这些都将在后面章节中提到。
 // Initializers can also include parameters. Here's an example of using a parameter to initialize
 // the class's temperature to a given value.
 //
 // The following class contains two initializers:
 struct Celsius
 {
-	var temperatureInCelsius: Double = 0.0
-	
-	// Initialize our temperature from Fahrenheit
-	init(fromFahrenheit fahrenheit: Double)
-	{
-		temperatureInCelsius = (fahrenheit - 32.0) / 1.8
-	}
-	
-	// Initialize our temperature from Kelvin
-	init(kelvin: Double)
-	{
-		temperatureInCelsius = kelvin - 273.15
-	}
+    var temperatureInCelsius: Double = 0.0
+    
+    // Initialize our temperature from Fahrenheit
+    init(fromFahrenheit fahrenheit: Double)
+    {
+        temperatureInCelsius = (fahrenheit - 32.0) / 1.8
+    }
+    
+    // Initialize our temperature from Kelvin
+    init(kelvin: Double)
+    {
+        temperatureInCelsius = kelvin - 273.15
+    }
 }
 
 // Now let's try our new initializers
 let boilingPotOfWater = Celsius(fromFahrenheit: 212.0)
 let freezingPointOfWater = Celsius(kelvin: 273.15)
+let c = Celsius(kelvin: 12)
 
 // External parameter names are automatically generated for the initializer. In order to opt-out
 // of this automated convenience, you can specify "_" for the extnenal name explicitly.
-//
+// 外部参数自动生成,可使用_去掉生成外部参数
 // Here's a class that defines two initializers - one that makes use of the automatic external
 // name generation and one that opts out:
 struct Color
 {
-	let red = 0.0, green = 0.0, blue = 0.0
-	
-	// This initializer will make use of automatically generated exernal names
-	init(red: Double, green: Double, blue: Double)
-	{
-		self.red = red
-		self.green = green
-		self.blue = blue
-	}
-	
-	// This initializer opts out by explicitly declaring external names with "_"
-	init(_ red: Double, _ blue: Double)
-	{
-		self.red = red
-		self.green = 0
-		self.blue = blue
-	}
+    //let red = 0.0, green = 0.0, blue = 0.0
+    let red :Double
+    let green :Double
+    let blue:Double
+    
+    // This initializer will make use of automatically generated exernal names
+    init(red: Double, green: Double, blue: Double)
+    {
+        self.red = red
+        self.green = green
+        self.blue = blue
+    }
+    
+    // This initializer opts out by explicitly declaring external names with "_"
+    init(_ red: Double, _ blue: Double)
+    {
+        self.red = red
+        self.green = 0
+        self.blue = blue
+    }
 }
 
 // Here, we can see our efforts pay off:
@@ -91,51 +127,53 @@ let magenta = Color(red: 1.0, green: 0.0, blue: 1.0)
 let purple = Color(1.0, 0.5)
 
 // Optional properties do not need to be initialized:
+// 可选值不需要init
 class SurveyQuestion
 {
-	var text: String
-	
-	// Response is optional, and is automatically initialized to nil
-	var response: String?
-
-	init(text: String)
-	{
-		// We only need to initialize 'text'
-		self.text = text
-	}
-	
-	func ask() -> String
-	{
-		return text
-	}
+    var text: String
+    
+    // Response is optional, and is automatically initialized to nil
+    var response: String?
+    
+    init(text: String)
+    {
+        // We only need to initialize 'text'
+        self.text = text
+    }
+    
+    func ask() -> String
+    {
+        return text
+    }
 }
 
 // Constants need initialization as well. In the following example, our constant has a default
 // value. However, if we initialize the class with the init(text: String) initializer, we can
 // modify the default value to use the one passed in:
+// 2.0版本let赋默认值后,构造器后面不允许赋值
 class SurveyQuestion2
 {
-	// Default value of "No question"
-	let text: String = "No question"
-	
-	var response: String?
-	
-	init(text: String)
-	{
-		// Initializing the constant, 'text', even though it has a default value, we can modify
-		// that default value here
-		self.text = text
-	}
-	
-	init()
-	{
-		// We do nothing here and let the default value for 'text' define its value
-	}
-	
-	func ask() -> String
-	{
-		return text
-	}
+    // Default value of "No question"
+    let text: String = "No question"
+    
+    var response: String?
+    
+    init(text: String)
+    {
+        // Initializing the constant, 'text', even though it has a default value, we can modify
+        // that default value here
+        // self.text = text
+    }
+    
+    init()
+    {
+        // We do nothing here and let the default value for 'text' define its value
+    }
+    
+    func ask() -> String
+    {
+        return text
+    }
 }
 
 // Here, we initialize the class with a blank initializer (calling init()) to let text's default
@@ -147,36 +185,45 @@ let beetsQuestion = SurveyQuestion2(text: "Do you like beets?")
 
 // ------------------------------------------------------------------------------------------------
 // Default Initializer
+// 默认构造器
 //
 // If all properties have default values (including optionals defaulting to nil) AND you do not
 // create your own initlializer AND there is no superclass, Swift will create a default
 // initializer (with no parameters) for you. This initializer sets all properties to their
 // default values.
+// 如果你自己不写构造器,编译器会给你生成一个,并且每个赋值为default值
 //
 // If you create your own initializer, Swift will not create the default initializer. If you want
 // your custom initializers as well as the default initializer, then put your initializers in an
 // extension.
+// 如果自己创建了,编译器就不会给你创建了啦
 class ShoppingListItem
 {
-	var name: String?
-	var quantity = 1
-	var purchased = false
-	
-	// No init(...) initializer
+    var name: String?
+    var quantity = 1
+    var purchased = false
+    
+    // No init(...) initializer
 }
 
 // ------------------------------------------------------------------------------------------------
 // Memberwise Initializers for Structure Types
+// 成员初始化for 结构体类型
 //
 // Similar to the default initializer for classes, structures that do not implement an initializer
 // but have default values for their stored properties will get a default memberwise initializer.
+// 结构体初始化
 //
 // As with classes, if you want your custom initializers as well as the default memberwise
 // initializer, then put your initializers in an extension.
 struct Size
 {
-	var width = 0.0
-	var height = 0.0
+    var width = 0.0
+    var height = 0.0
+    /*
+    init() {
+        self.width = 3.0;
+    }*/
 }
 
 // Here, we call the default memberwise initializer that Swift created for us
@@ -195,38 +242,39 @@ let twoByTwo = Size(width: 2.0, height: 2.0)
 // This concept is further extended in "Initializer Chaining", covered later.
 struct Point
 {
-	var x = 0.0
-	var y = 0.0
+    var x = 0.0
+    var y = 0.0
 }
 
 struct Rect
 {
-	var origin = Point()
-	var size = Size()
-	
-	// We create a basic initializer to use the default values Since we define other initializers,
-	// the system won't create this for us, so we need to define it ourselves. Since we're using
-	// the defaults, it is an empty closure.
-	init() {}
-	
-	// Init from origin/size
-	init(origin: Point, size: Size)
-	{
-		self.origin = origin
-		self.size = size
-	}
-	
-	// Init from center/size - note how we use the init(origin:size) to  perform actual
-	// initialization
-	init(center: Point, size: Size)
-	{
-		let originX = center.x - size.width / 2
-		let originY = center.y - size.height / 2
-		self.init(origin: Point(x: originX, y: originY), size: size)
-	}
+    var origin = Point()
+    var size = Size()
+    
+    // We create a basic initializer to use the default values Since we define other initializers,
+    // the system won't create this for us, so we need to define it ourselves. Since we're using
+    // the defaults, it is an empty closure.
+    init() {}
+    
+    // Init from origin/size
+    init(origin: Point, size: Size)
+    {
+        self.origin = origin
+        self.size = size
+    }
+    
+    // Init from center/size - note how we use the init(origin:size) to  perform actual
+    // initialization
+    init(center: Point, size: Size)
+    {
+        let originX = center.x - size.width / 2
+        let originY = center.y - size.height / 2
+        self.init(origin: Point(x: originX, y: originY), size: size)
+    }
 }
 
 // Here, we call the three initializers:
 let basicRect = Rect()
 let originRect = Rect(origin: Point(x: 2.0, y: 2.0), size: Size(width: 5.0, height: 5.0))
 let centerRect = Rect(center: Point(x: 4.0, y: 4.0), size: Size(width: 3.0, height: 3.0))
+print(centerRect)
