@@ -1,12 +1,16 @@
+// 下标脚本（Subscripts）
 // ------------------------------------------------------------------------------------------------
 // Things to know:
 //
 // * Subscripts allow you to declare functionality for instances to make use of the subscript
 //   operator ( [] ).
+//   下标操作符
 //
 // * Subscripts are available for classes, structures and enumerations.
+//   适用于class,struct,enum
 //
 // * Subscripts are declared much like getters and setters for properties.
+//   跟gettr setter类似
 // ------------------------------------------------------------------------------------------------
 
 // Subscripts are declared like getters and setters, and follow the same syntax rules for
@@ -38,6 +42,7 @@ threeTimesTable[4.0]
 
 // Subscripts can take any parameter type and variadic parameters, but cannot use inout or default
 // parameters.
+// 不能用Inout
 //
 // Here's a more complex example:
 struct Matrix
@@ -75,6 +80,7 @@ struct Matrix
 }
 
 // We'll create a standard 4x4 identity matrix
+// 创建一个矩阵
 var matrix = Matrix(rows: 4, columns: 4)
 matrix[0,0] = 1
 matrix[1,1] = 1
